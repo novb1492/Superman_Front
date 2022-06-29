@@ -21,5 +21,8 @@ export default {
             superAndMarketMarkerArr[ii].setMap(null);
         }
         context.commit('clearSuperAndMarketMarkerArr');
+    },
+    setSearchData(context,setSearchData){
+        context.commit('setSearchData',setSearchData);
     }
 }
