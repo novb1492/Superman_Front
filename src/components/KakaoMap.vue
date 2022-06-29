@@ -52,6 +52,7 @@ export default {
     },
     showMarkets(data, status, pagination){
       if(status === window.kakao.maps.services.Status.OK){
+        this.$store.dispatch('setSearchData',{setSearchData: data});//상위 컴포넌트 사용위해 저장
         for(var i in data){
           console.log(data);
             var marker = this.setMarker(data[i]);
