@@ -22,7 +22,9 @@ export default {
     this.setDomSize(window.innerWidth,window.innerHeight);//돔 사이즈 지정
     window.addEventListener('resize',this.setDomResize);// 리사이즈 이벤트 지정
     window.kakao.maps.event.addListener(this.map, 'dragend',() =>{//중심점 변경시(드래그)인근 마트들 검색
-    this.searchForKeyword(this.map.getCenter());
+    var latlng=this.map.getCenter();
+    var b=this.searchMarket;
+    this.$store.dispatch('xyToAddress',{latlng: latlng,m:b});//좌표=>주소
   });
   },
   methods:{
@@ -35,30 +37,25 @@ export default {
     setDomResize(){
       this.setDomSize(window.innerWidth,window.innerHeight);
     },
-    searchForKeyword(latlng){
-      console.log(latlng.La);
-      //좌표를 주소로 변환
-      var geocoder = new window.kakao.maps.services.Geocoder();
-      geocoder.coord2Address(latlng.La, latlng.Ma, this.searchMarket);
-    },
     searchMarket(result, status) {
       if (status === window.kakao.maps.services.Status.OK) {
-        var ps = new window.kakao.maps.services.Places(); 
+        //키워드로 검색 ex) 서울 동작구 마트
         var address=result[0].address;
-        ps.keywordSearch(address.region_1depth_name+' '+address.region_2depth_name+' '+address.region_3depth_name+' 마트', this.showMarkets); 
-        ps.keywordSearch(address.region_1depth_name+' '+address.region_2depth_name+' '+address.region_3depth_name+' 슈퍼', this.showMarkets);
+        var keywords=[address.region_1depth_name+' '+address.region_2depth_name+' '+address.region_3depth_name+' 마트',address.region_1depth_name+' '+address.region_2depth_name+' '+address.region_3depth_name+' 슈퍼'];
+        this.$store.dispatch('searchForAddress',{keywordArr: keywords,callback:this.showMarkets});//키워드 검색
+        return;
       }   
     },
     showMarkets(data, status, pagination){
-      console.log(pagination);
+      console.log(data);
       if(status === window.kakao.maps.services.Status.OK){
         if(pagination.hasNextPage){
           pagination.nextPage();
         }
-
         return;
       }
     },
+
     
   }   
 }
