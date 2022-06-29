@@ -1,20 +1,17 @@
 <template>
-    <span v-if="searchDataArr!=null">
+  <span v-if="searchDataArr!=null">
      <swiper
     :slides-per-view="1.2"
     :space-between="50"
     @swiper="onSwiper"
     @slideChange="onSlideChange"
   > 
-    <swiper-slide v-for="(searchData,index) in searchDataArr.setSearchData" :key="index">
-    {{searchData}}
-    </swiper-slide>
-
+  <swiper-slide v-for="(searchData,index) in searchDataArr.setSearchData" :key="index">
+  <div @mouseover="moveXy(searchData.x,searchData.y)">{{searchData.place_name}}</div>
+  </swiper-slide>
   </swiper>
-    </span>
-      <input type="button" value="fd" @click="test">
-
-    <kakao-map></kakao-map>
+  </span>
+  <kakao-map ref="kmap"></kakao-map>
     
 </template>
 
@@ -44,8 +41,8 @@ export default {
       };
   },
   methods:{
-    test(){
-      console.log(this.searchDataArr);
+    moveXy(x,y){
+      this.$refs.kmap.changeFocus(x,y);
     }
   }
 }
