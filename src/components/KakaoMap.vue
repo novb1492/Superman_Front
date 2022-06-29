@@ -1,5 +1,7 @@
 <template>
+  <div ref="placeName"></div>
     <div id="map" ref="map"></div>
+    <div ref="placeName"></div>
 </template>
 
 <script>
@@ -50,9 +52,17 @@ export default {
     },
     showMarkets(data, status, pagination){
       if(status === window.kakao.maps.services.Status.OK){
-        console.log(this.superAndMarketMarkerArr.length);
         for(var i in data){
+          console.log(data);
             var marker = this.setMarker(data[i]);
+            // 마커에 마우스오버 이벤트를 등록합니다
+            window.kakao.maps.event.addListener(marker, 'mouseover', ()=> {
+              this.$refs.placeName.innerHTML="<span>"+data[i].place_name+'</span>';
+            });
+            // 마커에 마우스아웃 이벤트를 등록합니다
+            window.kakao.maps.event.addListener(marker, 'mouseout',()=> {
+              this.$refs.placeName.innerHTML="";
+            });
             // 마커가 지도 위에 표시되도록 설정합니다
             marker.setMap(this.map);
             this.superAndMarketMarkerArr[this.superAndMarketMarkerArr.length]=marker;
