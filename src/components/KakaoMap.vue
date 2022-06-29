@@ -8,7 +8,8 @@ export default {
   name: 'KakaoMap',
   computed: {
     ...mapGetters({
-      map: 'getMap'
+      map: 'getMap',
+      superAndMarketMarkerArr:'getSuperAndMarketMarkerArr',
     })
   },
   mounted(){
@@ -42,18 +43,30 @@ export default {
         //키워드로 검색 ex) 서울 동작구 마트
         var address=result[0].address;
         var keywords=[address.region_1depth_name+' '+address.region_2depth_name+' '+address.region_3depth_name+' 마트',address.region_1depth_name+' '+address.region_2depth_name+' '+address.region_3depth_name+' 슈퍼'];
+        this.$store.dispatch('clearSuperAndMarketMarkerArr',this.superAndMarketMarkerArr);//기존 마커들 지우기
         this.$store.dispatch('searchForAddress',{keywordArr: keywords,callback:this.showMarkets});//키워드 검색
         return;
       }   
     },
     showMarkets(data, status, pagination){
-      console.log(data);
       if(status === window.kakao.maps.services.Status.OK){
+        console.log(this.superAndMarketMarkerArr.length);
+        for(var i in data){
+            var marker = this.setMarker(data[i]);
+            // 마커가 지도 위에 표시되도록 설정합니다
+            marker.setMap(this.map);
+            this.superAndMarketMarkerArr[this.superAndMarketMarkerArr.length]=marker;
+        }
         if(pagination.hasNextPage){
           pagination.nextPage();
         }
         return;
       }
+    },
+    setMarker(latLng){
+        return new window.kakao.maps.Marker({
+          position: new window.kakao.maps.LatLng(latLng.y, latLng.x)
+        });
     },
 
     

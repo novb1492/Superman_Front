@@ -7,10 +7,14 @@ export const kmapStore = new Vuex.Store({
         map:null,
         kWidth:0,
         kHeight:0,
+        superAndMarketMarkerArr:[],
     },
     getters: {
         getMap(state) {
             return state.map;
+        },
+        getSuperAndMarketMarkerArr(state){
+            return state.superAndMarketMarkerArr;
         },
     },
     mutations,

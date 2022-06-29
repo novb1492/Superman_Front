@@ -15,6 +15,11 @@ export default {
         for(var i in keywordArr){
             ps.keywordSearch(keywordArr[i], payload.callback); 
         }
+    }, 
+    clearSuperAndMarketMarkerArr(context,superAndMarketMarkerArr){
+        for(var ii in superAndMarketMarkerArr){
+            superAndMarketMarkerArr[ii].setMap(null);
+        }
+        context.commit('clearSuperAndMarketMarkerArr');
     }
-    
 }
