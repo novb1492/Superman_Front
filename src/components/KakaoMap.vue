@@ -1,5 +1,5 @@
 <template>
-    <div id="map" style="width:500px;height:400px;"></div>
+    <div id="map" ref="map"></div>
 </template>
 
 <script>
@@ -19,7 +19,21 @@ export default {
         level: 3 //지도의 레벨(확대, 축소 정도)
     };
     this.$store.dispatch('init',values); //지도 생성
-  },   
+    this.setDomSize(window.innerWidth,window.innerHeight);//돔 사이즈 지정
+     window.addEventListener('resize',this.setDomResize);// 리사이즈 이벤트 지정
+  },
+  methods:{
+    setDomSize(width,height){
+      var domMap=this.$refs.map;
+      domMap.style.width=width+'px';
+      domMap.style.height=height+'px';
+      this.map.relayout();
+    },
+    setDomResize(){
+      this.setDomSize(window.innerWidth,window.innerHeight);
+    }
+  }   
 }
 </script>
+
 
