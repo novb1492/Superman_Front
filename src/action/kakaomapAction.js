@@ -1,6 +1,6 @@
 export default {
-    setSize(context,data) {
-        context.commit('changeState',data);
+    init(context,data) {
+        context.commit('setMap',data);
     },
     
 }
