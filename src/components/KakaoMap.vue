@@ -21,7 +21,7 @@ export default {
     this.$store.dispatch('init',values); //지도 생성
     this.setDomSize(window.innerWidth,window.innerHeight);//돔 사이즈 지정
     window.addEventListener('resize',this.setDomResize);// 리사이즈 이벤트 지정
-    window.kakao.maps.event.addListener(this.map, 'center_changed',() =>{//중심점 변경시(드래그)인근 마트들 검색
+    window.kakao.maps.event.addListener(this.map, 'dragend',() =>{//중심점 변경시(드래그)인근 마트들 검색
     this.searchForKeyword(this.map.getCenter());
   });
   },
@@ -50,10 +50,12 @@ export default {
       }   
     },
     showMarkets(data, status, pagination){
+      console.log(pagination);
       if(status === window.kakao.maps.services.Status.OK){
-        console.log(data);
-        console.log(status);
-        console.log(pagination);
+        if(pagination.hasNextPage){
+          pagination.nextPage();
+        }
+
         return;
       }
     },
