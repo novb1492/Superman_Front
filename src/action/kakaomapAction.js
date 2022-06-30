@@ -6,7 +6,6 @@ export default {
         var superAndMarketMarkerArr=payload.arr;
         var indexArr=payload.not;
         for(var ii in superAndMarketMarkerArr){
-            console.log(ii);
             if(indexArr.indexOf(ii*1)==-1){
                 superAndMarketMarkerArr[ii].setMap(null);
             }
