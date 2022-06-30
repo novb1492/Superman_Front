@@ -7,7 +7,12 @@ export default {
         state.superAndMarketMarkerArr=[];
     },
     setSearchData(state,searchData){
-        state.searchData=searchData;
+        if(searchData!=null&&searchData!=undefined){
+            state.searchData[state.searchData.length]=searchData;
+        }
+    },
+    clearSearchDataArr(state){
+        state.searchData=[];
     }
     
 
