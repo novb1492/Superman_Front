@@ -9,7 +9,7 @@
  
 
 <swiper-slide v-for="(item,index) in arr " :key="item">
-{{index}}
+{{item}}{{index}}index
 </swiper-slide>
 
   </swiper>
