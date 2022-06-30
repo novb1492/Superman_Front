@@ -9,6 +9,7 @@
 
 <swiper-slide v-for="(item,index) in arr " :key="item">
 {{index}}index
+  <div @mouseover="moveXy(item)">{{index}}index</div>
 </swiper-slide>
 
   </swiper>
@@ -63,9 +64,9 @@ export default {
         var geocoder = new window.kakao.maps.services.Geocoder();
         geocoder.coord2Address(latlng.La, latlng.Ma,this.searchMarket);
     },
-    moveXy(item,index){
-      console.log(item);
-      this.$refs.kmap.changeFocus(item.setSearchData[index]);
+    moveXy(item){
+  
+      this.$refs.kmap.changeFocus(item);
     },
     searchMarket(result, status) {
       if (status === window.kakao.maps.services.Status.OK) {
@@ -114,11 +115,15 @@ export default {
             var an=data[i].address_name;
             var checkText=pn+","+an;
             if(!this.nameAndAddressArr.includes(checkText)){
+              console.log(checkText);
               this.nameAndAddressArr[this.nameAndAddressArr.length]=checkText;
               this.arr[this.arr.length]=data[i];
               var marker = this.$refs.kmap.setMarker(data[i]);
               marker.setMap(this.map);
               this.superAndMarketMarkerArr[this.superAndMarketMarkerArr.length]=marker;
+              if(data[i].place_name=='두원 제주반품샵'){
+                console.log(marker);
+              }
             }
         }
     },
