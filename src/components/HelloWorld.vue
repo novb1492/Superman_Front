@@ -27,8 +27,8 @@ export default {
     return {
       kmapWidth:window.innerWidth,
       kmapHeight:window.innerHeight,
-      resizeWidth:window.innerWidth,
-      resizeHeight:window.innerHeight,
+      resizeWidth:'full',
+      resizeHeight:'full',
       arr:[],
       nameAndAddressArr:[],
     }
@@ -116,16 +116,11 @@ export default {
             if(!this.nameAndAddressArr.includes(checkText)){
               this.nameAndAddressArr[this.nameAndAddressArr.length]=checkText;
               this.arr[this.arr.length]=data[i];
-              var marker = this.setMarker(data[i]);
+              var marker = this.$refs.kmap.setMarker(data[i]);
               marker.setMap(this.map);
               this.superAndMarketMarkerArr[this.superAndMarketMarkerArr.length]=marker;
             }
         }
-    },
-    setMarker(latLng){
-        return new window.kakao.maps.Marker({
-          position: new window.kakao.maps.LatLng(latLng.y, latLng.x)
-        });
     },
   }
 }
