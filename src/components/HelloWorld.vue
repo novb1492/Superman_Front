@@ -83,9 +83,11 @@ export default {
     },
     search(keywords){
       var ps = new window.kakao.maps.services.Places(); 
-      for(var i in keywords){
+      ps.keywordSearch(keywords[0], this.setAllData);
+      /*for(var i in keywords){
+        console.log(keywords[i]);
         ps.keywordSearch(keywords[i], this.setAllData); 
-      }
+      }*/
     },
     setAllData(data, status, pagination){
         if (status === window.kakao.maps.services.Status.OK) {
@@ -109,21 +111,18 @@ export default {
       }
     },
     displayPlaces(data){ 
+      console.log(data);
         for(var i in data){
             // 마커가 지도 위에 표시되도록 설정합니다
             var pn=data[i].place_name;
             var an=data[i].address_name;
             var checkText=pn+","+an;
             if(!this.nameAndAddressArr.includes(checkText)){
-              console.log(checkText);
               this.nameAndAddressArr[this.nameAndAddressArr.length]=checkText;
               this.arr[this.arr.length]=data[i];
               var marker = this.$refs.kmap.setMarker(data[i]);
               marker.setMap(this.map);
               this.superAndMarketMarkerArr[this.superAndMarketMarkerArr.length]=marker;
-              if(data[i].place_name=='두원 제주반품샵'){
-                console.log(marker);
-              }
             }
         }
     },
