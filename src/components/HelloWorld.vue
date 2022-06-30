@@ -1,14 +1,27 @@
 <template>
-  <show-market-info :arr="arr"></show-market-info>
+<swiper
+    :slides-per-view="5.3"
+    :space-between="50"
+    @swiper="onSwiper"
+    @slideChange="onSlideChange"
+  > 
+ 
+
+<swiper-slide v-for="(item,index) in arr " :key="item">
+{{item}}{{index}}index
+</swiper-slide>
+
+  </swiper>
   <kakao-map ref="kmap" :height="kmapHeight" :width="kmapWidth" :resizeWidth="resizeWidth" :resizeHeight="resizeHeight"></kakao-map>
 </template>
 
 <script>
 import KakaoMap from './KakaoMap.vue';
 import { mapGetters } from 'vuex';
-import ShowMarketInfo from './showMarketInfo.vue';
+import { Swiper, SwiperSlide } from 'swiper/vue';
+
 export default {
-  components: { KakaoMap, ShowMarketInfo },
+  components: {Swiper,SwiperSlide, KakaoMap  },
   name: 'HelloWorld',
   data() {
     return {
@@ -19,6 +32,18 @@ export default {
       arr:[],
       nameAndAddressArr:[],
     }
+  },
+  setup() {
+      const onSwiper = (swiper) => {
+        console.log(swiper);
+      };
+      const onSlideChange = () => {
+        console.log('slide change');
+      };
+      return {
+        onSwiper,
+        onSlideChange,
+      };
   },
   computed: {
     ...mapGetters({
