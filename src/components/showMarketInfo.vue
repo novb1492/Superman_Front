@@ -1,5 +1,5 @@
 <template>
-all
+{{arr}}
 <br>
  <swiper
     :slides-per-view="1.2"
@@ -35,7 +35,6 @@ export default {
       };
   },
   mounted(){
-    console.log(this.arr);
   },
   methods:{
 
