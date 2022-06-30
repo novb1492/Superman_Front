@@ -11,7 +11,6 @@ export default {
   computed: {
     ...mapGetters({
       map: 'getMap',
-      superAndMarketMarkerArr:'getSuperAndMarketMarkerArr',
     })
   },
   mounted(){
@@ -33,7 +32,19 @@ export default {
       this.map.relayout();
     },
     setDomResize(){
-      this.setDomSize(this.resizeWidth,this.resizeHeight);
+      var width=0;
+      var height=0;
+      if(this.resizeWidth=='full'){
+        width=window.innerWidth;
+      }else{
+        width=this.resizeWidth;
+      }
+      if(this.resizeHeight=='full'){
+        height=window.innerHeight;
+      }else{
+        height=this.resizeHeight;
+      }
+      this.setDomSize(width,height);
     },
     setMarker(latLng){
         return new window.kakao.maps.Marker({
