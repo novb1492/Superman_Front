@@ -88,9 +88,7 @@ export default {
             var pn=data[i].place_name;
             var an=data[i].address_name;
             var checkText=pn+","+an;
-            console.log(checkText);
             if(!this.nameAndAddressArr.includes(checkText)){
-              console.log(true);
               this.nameAndAddressArr[this.nameAndAddressArr.length]=checkText;
               this.arr[this.arr.length]=data[i];
               var marker = this.setMarker(data[i]);
