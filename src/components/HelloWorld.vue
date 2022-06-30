@@ -8,8 +8,7 @@
  
 
 <swiper-slide v-for="(item,index) in arr " :key="item">
-{{index}}index
-  <div @mouseover="moveXy(item)">{{index}}index</div>
+   <div @mouseover="moveXy(item,index)">{{index}}index</div>
 </swiper-slide>
 
   </swiper>
@@ -32,6 +31,7 @@ export default {
       resizeHeight:'full',
       arr:[],
       nameAndAddressArr:[],
+      onMouseIndex:[],
     }
   },
   setup() {
@@ -64,9 +64,13 @@ export default {
         var geocoder = new window.kakao.maps.services.Geocoder();
         geocoder.coord2Address(latlng.La, latlng.Ma,this.searchMarket);
     },
-    moveXy(item){
-  
+    moveXy(item,index){
       this.$refs.kmap.changeFocus(item);
+      var content = '<div style="padding:5px;z-index:1;">' + item.place_name + '</div>';
+      this.$refs.kmap.showInfoWindow(content, this.superAndMarketMarkerArr[index]);
+      if(this.onMouseIndex.indexOf(index)==-1){
+        this.onMouseIndex[this.onMouseIndex.length]=index;
+      }
     },
     searchMarket(result, status) {
       if (status === window.kakao.maps.services.Status.OK) {
@@ -76,18 +80,16 @@ export default {
         var keywords=[text+' 마트',text+' 슈퍼',text+' 슈퍼마켓',text+' 상회'];
         this.arr=[];//이전 마켓정보들 초기화
         this.nameAndAddressArr=[];//이전 마켓정보들 초기화
-        this.$store.dispatch('clearSuperAndMarketMarkerArr',this.superAndMarketMarkerArr);//이전 마커들 지우기 + 초기화
+        this.$store.dispatch('clearSuperAndMarketMarkerArr',{arr:this.superAndMarketMarkerArr,not:this.onMouseIndex});//이전 마커들 지우기 + 초기화
         this.search(keywords);
         return;
       }   
     },
     search(keywords){
       var ps = new window.kakao.maps.services.Places(); 
-      ps.keywordSearch(keywords[0], this.setAllData);
-      /*for(var i in keywords){
-        console.log(keywords[i]);
+      for(var i in keywords){
         ps.keywordSearch(keywords[i], this.setAllData); 
-      }*/
+      }
     },
     setAllData(data, status, pagination){
         if (status === window.kakao.maps.services.Status.OK) {
@@ -111,7 +113,6 @@ export default {
       }
     },
     displayPlaces(data){ 
-      console.log(data);
         for(var i in data){
             // 마커가 지도 위에 표시되도록 설정합니다
             var pn=data[i].place_name;
