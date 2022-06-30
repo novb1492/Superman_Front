@@ -1,26 +1,14 @@
 <template>
-     <swiper
-    :slides-per-view="4"
-    :space-between="50"
-    @swiper="onSwiper"
-    @slideChange="onSlideChange"
-  > 
- 
-
-  <swiper-slide v-for="(item,index)  in searchDataArr" :key="index">
-  <div @mouseover="moveXy(item,index)">{{index}}</div>
-  </swiper-slide>
-  </swiper>
+  <show-market-info :arr="arr"></show-market-info>
   <kakao-map ref="kmap" :height="kmapHeight" :width="kmapWidth" :resizeWidth="resizeWidth" :resizeHeight="resizeHeight"></kakao-map>
 </template>
 
 <script>
 import KakaoMap from './KakaoMap.vue';
-// Import Swiper Vue.js components
-  import { Swiper, SwiperSlide } from 'swiper/vue';
 import { mapGetters } from 'vuex';
+import ShowMarketInfo from './showMarketInfo.vue';
 export default {
-  components: { KakaoMap,Swiper,SwiperSlide, },
+  components: { KakaoMap, ShowMarketInfo },
   name: 'HelloWorld',
   data() {
     return {
@@ -37,22 +25,9 @@ export default {
       superAndMarketMarkerArr:'getSuperAndMarketMarkerArr',
     })
   },
-  setup() {
-      const onSwiper = (swiper) => {
-        console.log(swiper);
-      };
-      const onSlideChange = () => {
-        console.log('slide change');
-      };
-      return {
-        onSwiper,
-        onSlideChange,
-      };
-  },
   mounted(){
     window.kakao.maps.event.addListener(this.map, 'dragend',() =>{//중심점 변경시(드래그)인근 마트들 검색
       this.xyToAddress();
-      
     });
   },
   methods:{
@@ -63,16 +38,17 @@ export default {
         geocoder.coord2Address(latlng.La, latlng.Ma,this.searchMarket);
     },
     moveXy(item,index){
-      console.log(index);
+      console.log(item);
       this.$refs.kmap.changeFocus(item.setSearchData[index]);
     },
     searchMarket(result, status) {
       if (status === window.kakao.maps.services.Status.OK) {
         //키워드로 검색 ex) 서울 동작구 마트
         var address=result[0].address;
-        var keywords=[address.region_1depth_name+' '+address.region_2depth_name+' '+address.region_3depth_name+' 슈퍼마켓',address.region_1depth_name+' '+address.region_2depth_name+' '+address.region_3depth_name+' 마트',address.region_1depth_name+' '+address.region_2depth_name+' '+address.region_3depth_name+' 슈퍼'];
-        // this.$store.dispatch('clearSearchDataArr');//기존 마커들 지우기
-        this.$store.dispatch('clearSuperAndMarketMarkerArr',this.superAndMarketMarkerArr);//기존 마커들 지우기
+        var text=address.region_1depth_name+' '+address.region_2depth_name+' '+address.region_3depth_name;
+        var keywords=[text+' 마트 슈퍼',text+' 슈퍼',text+' 슈퍼마켓',text+' 상회'];
+        this.arr=[];//이전 마켓정보들 초기화
+        this.$store.dispatch('clearSuperAndMarketMarkerArr',this.superAndMarketMarkerArr);//이전 마커들 지우기 + 초기화
         this.search(keywords);
         return;
       }   
@@ -108,8 +84,12 @@ export default {
         for(var i in data){
             var marker = this.setMarker(data[i]);
             // 마커가 지도 위에 표시되도록 설정합니다
-            marker.setMap(this.map);
-            this.superAndMarketMarkerArr[this.superAndMarketMarkerArr.length]=marker;
+            if(!this.arr.includes(data)){
+              this.arr[this.arr.length]=data;
+            }else if(!this.superAndMarketMarkerArr.includes(marker)){
+              marker.setMap(this.map);
+              this.superAndMarketMarkerArr[this.superAndMarketMarkerArr.length]=marker;
+            }
         }
     },
     setMarker(latLng){
