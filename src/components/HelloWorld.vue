@@ -17,6 +17,7 @@ export default {
       resizeWidth:window.innerWidth,
       resizeHeight:window.innerHeight,
       arr:[],
+      nameAndAddressArr:[],
     }
   },
   computed: {
@@ -82,11 +83,16 @@ export default {
     },
     displayPlaces(data){ 
         for(var i in data){
-            var marker = this.setMarker(data[i]);
             // 마커가 지도 위에 표시되도록 설정합니다
-            if(!this.arr.includes(data)){
-              this.arr[this.arr.length]=data;
-            }else if(!this.superAndMarketMarkerArr.includes(marker)){
+            var pn=data[i].place_name;
+            var an=data[i].address_name;
+            var checkText=pn+","+an;
+            console.log(checkText);
+            if(!this.nameAndAddressArr.includes(checkText)){
+              console.log(true);
+              this.nameAndAddressArr[this.nameAndAddressArr.length]=checkText;
+              this.arr[this.arr.length]=data[i];
+              var marker = this.setMarker(data[i]);
               marker.setMap(this.map);
               this.superAndMarketMarkerArr[this.superAndMarketMarkerArr.length]=marker;
             }
