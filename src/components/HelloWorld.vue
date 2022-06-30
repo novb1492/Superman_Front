@@ -81,6 +81,7 @@ export default {
         this.arr=[];//이전 마켓정보들 초기화
         this.nameAndAddressArr=[];//이전 마켓정보들 초기화
         this.$store.dispatch('clearSuperAndMarketMarkerArr',{arr:this.superAndMarketMarkerArr,not:this.onMouseIndex});//이전 마커들 지우기 + 초기화
+        this.onMouseIndex=[];//지워줘야 한다 설명은 생략
         this.search(keywords);
         return;
       }   
