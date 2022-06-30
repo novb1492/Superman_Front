@@ -8,7 +8,7 @@ export const kmapStore = new Vuex.Store({
         kWidth:0,
         kHeight:0,
         superAndMarketMarkerArr:[],
-        searchData:null,
+        searchData:[],
     },
     getters: {
         getMap(state) {

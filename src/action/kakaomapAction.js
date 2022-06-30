@@ -24,5 +24,8 @@ export default {
     },
     setSearchData(context,setSearchData){
         context.commit('setSearchData',setSearchData);
+    },
+    clearSearchDataArr(context){
+        context.commit('clearSearchDataArr');
     }
 }

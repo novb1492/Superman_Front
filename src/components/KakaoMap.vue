@@ -7,10 +7,12 @@
 import { mapGetters } from 'vuex';
 export default {
   name: 'KakaoMap',
+  props:['width','height','resizeWidth','resizeHeight'],
   computed: {
     ...mapGetters({
       map: 'getMap',
       superAndMarketMarkerArr:'getSuperAndMarketMarkerArr',
+      searchDataArr: 'getSearchData',
     })
   },
   mounted(){
@@ -21,13 +23,8 @@ export default {
         level: 3 //지도의 레벨(확대, 축소 정도)
     };
     this.$store.dispatch('init',values); //지도 생성
-    this.setDomSize(window.innerWidth,window.innerHeight);//돔 사이즈 지정
+    this.setDomSize(this.width,this.height);//돔 사이즈 지정
     window.addEventListener('resize',this.setDomResize);// 리사이즈 이벤트 지정
-    window.kakao.maps.event.addListener(this.map, 'dragend',() =>{//중심점 변경시(드래그)인근 마트들 검색
-    var latlng=this.map.getCenter();
-    var b=this.searchMarket;
-    this.$store.dispatch('xyToAddress',{latlng: latlng,m:b});//좌표=>주소
-  });
   },
   methods:{
     setDomSize(width,height){
@@ -37,42 +34,28 @@ export default {
       this.map.relayout();
     },
     setDomResize(){
-      this.setDomSize(window.innerWidth,window.innerHeight);
+      this.setDomSize(this.resizeWidth,this.resizeHeight);
     },
     searchMarket(result, status) {
       if (status === window.kakao.maps.services.Status.OK) {
         //키워드로 검색 ex) 서울 동작구 마트
         var address=result[0].address;
         var keywords=[address.region_1depth_name+' '+address.region_2depth_name+' '+address.region_3depth_name+' 슈퍼마켓',address.region_1depth_name+' '+address.region_2depth_name+' '+address.region_3depth_name+' 마트',address.region_1depth_name+' '+address.region_2depth_name+' '+address.region_3depth_name+' 슈퍼'];
+        this.$store.dispatch('clearSearchDataArr');//기존 마커들 지우기
         this.$store.dispatch('clearSuperAndMarketMarkerArr',this.superAndMarketMarkerArr);//기존 마커들 지우기
-        this.$store.dispatch('searchForAddress',{keywordArr: keywords,callback:this.showMarkets});//키워드 검색
+        this.$store.dispatch('searchForAddress',{keywordArr: keywords,callback:this.setAllData});//키워드 검색
+        this.drawMarker(this.searchDataArr);
         return;
       }   
-    },
-    showMarkets(data, status, pagination){
-      console.log(pagination);
-      if(status === window.kakao.maps.services.Status.OK){
-        this.$store.dispatch('setSearchData',{setSearchData: data});//상위 컴포넌트 사용위해 저장
-        for(var i in data){
-          //console.log(data);
-            var marker = this.setMarker(data[i]);
-            // 마커가 지도 위에 표시되도록 설정합니다
-            marker.setMap(this.map);
-            this.superAndMarketMarkerArr[this.superAndMarketMarkerArr.length]=marker;
-        }
-        if(pagination.hasNextPage){
-          pagination.nextPage();
-        }
-        return;
-      }
     },
     setMarker(latLng){
         return new window.kakao.maps.Marker({
           position: new window.kakao.maps.LatLng(latLng.y, latLng.x)
         });
     },
-    changeFocus(x,y){
-      this.map.panTo(new window.kakao.maps.LatLng(y, x));
+    changeFocus(item){
+      console.log(item.place_name);
+      /*this.map.panTo(new window.kakao.maps.LatLng(y, x));
       var iwContent = '<div style="padding:5px;"><a href="https://map.kakao.com/link/map/Hello World!,33.450701,126.570667" style="color:blue" target="_blank">큰지도보기</a></div>', // 인포윈도우에 표출될 내용으로 HTML 문자열이나 document element가 가능합니다
       iwPosition = new window.kakao.maps.LatLng(y, x); //인포윈도우 표시 위치입니다
       // 인포윈도우를 생성합니다
@@ -81,13 +64,7 @@ export default {
           content : iwContent 
       });
       // 마커 위에 인포윈도우를 표시합니다. 두번째 파라미터인 marker를 넣어주지 않으면 지도 위에 표시됩니다
-      infowindow.open(this.map);
-      var data=new Object; 
-      data.x=x;
-      data.y=y;
-      //안그려져 있을 수 있으니 마커 생성
-      var marker = this.setMarker(data);
-      marker.setMap(this.map);
+      infowindow.open(this.map);*/
     },  
     
   }   
