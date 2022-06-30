@@ -52,12 +52,17 @@ export default {
         });
     },
     changeFocus(item){
-      console.log(item.place_name);
       var x=item.x;
       var y=item.y;
       this.map.panTo(new window.kakao.maps.LatLng(y, x));
-
+  
     },  
+    showInfoWindow(content,marker){
+      var infowindow = new window.kakao.maps.InfoWindow({zIndex:1});
+      infowindow.setContent(content);
+      infowindow.open(this.map, marker);
+      return infowindow;
+    },
     
   }   
 }

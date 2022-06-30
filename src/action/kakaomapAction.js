@@ -2,14 +2,16 @@ export default {
     init(context,data) {
         context.commit('setMap',data);
     },
-    clearSuperAndMarketMarkerArr(context,superAndMarketMarkerArr){
+    clearSuperAndMarketMarkerArr(context,payload){
+        var superAndMarketMarkerArr=payload.arr;
+        var indexArr=payload.not;
         for(var ii in superAndMarketMarkerArr){
-            superAndMarketMarkerArr[ii].setMap(null);
+            console.log(ii);
+            if(indexArr.indexOf(ii*1)==-1){
+                superAndMarketMarkerArr[ii].setMap(null);
+            }
         }
         context.commit('clearSuperAndMarketMarkerArr');
-    },
-    setSearchData(context,setSearchData){
-        context.commit('setSearchData',setSearchData);
     },
     clearSearchDataArr(context){
         context.commit('clearSearchDataArr');
