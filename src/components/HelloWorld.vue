@@ -49,6 +49,7 @@ export default {
         var text=address.region_1depth_name+' '+address.region_2depth_name+' '+address.region_3depth_name;
         var keywords=[text+' 마트 슈퍼',text+' 슈퍼',text+' 슈퍼마켓',text+' 상회'];
         this.arr=[];//이전 마켓정보들 초기화
+        this.nameAndAddressArr=[];//이전 마켓정보들 초기화
         this.$store.dispatch('clearSuperAndMarketMarkerArr',this.superAndMarketMarkerArr);//이전 마커들 지우기 + 초기화
         this.search(keywords);
         return;

@@ -1,5 +1,4 @@
 <template>
-{{arr}}
 <br>
  <swiper
     :slides-per-view="1.2"
