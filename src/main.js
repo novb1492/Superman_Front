@@ -2,11 +2,10 @@ import { createApp } from 'vue'
 import App from './App.vue'
 import Vuex from 'vuex'
 import router from './router'
-import {store} from './store/store'
-
+import {kmapStore} from './store/kmapStore';
+import '@/assets/css/swiper.min.css'
 const app = createApp(App);
 app.use(router);
 app.use(Vuex);
-app.use(store);
-
+app.use(kmapStore);
 app.mount('#app');
