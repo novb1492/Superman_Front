@@ -5,12 +5,9 @@
     @swiper="onSwiper"
     @slideChange="onSlideChange"
   > 
- 
-
 <swiper-slide v-for="(item,index) in arr " :key="item">
-   <div @mouseover="moveXy(item,index)">{{index}}index</div>
+   <div @mouseover="moveXy(item,index)">{{item.place_name}}<br/>{{item.address_name}}<br/>{{index}}index</div>
 </swiper-slide>
-
   </swiper>
   <kakao-map ref="kmap" :height="kmapHeight" :width="kmapWidth" :resizeWidth="resizeWidth" :resizeHeight="resizeHeight"></kakao-map>
 </template>
