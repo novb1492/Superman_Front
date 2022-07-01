@@ -1,5 +1,5 @@
 import actions from '../action/kakaomapAction'
-import mutations from '../modulation/kmapMutaions'
+import mutations from '../mutaion/kmapMutaions'
 import Vuex from 'vuex';
 
 export const kmapStore = new Vuex.Store({
