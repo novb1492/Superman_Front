@@ -8,6 +8,9 @@ export const kmapStore = new Vuex.Store({
         kWidth:0,
         kHeight:0,
         superAndMarketMarkerArr:[],
+        ps:new window.kakao.maps.services.Places(),
+        geocoder:new window.kakao.maps.services.Geocoder()
+
     },
     getters: {
         getMap(state) {
@@ -16,7 +19,13 @@ export const kmapStore = new Vuex.Store({
         getSuperAndMarketMarkerArr(state){
             return state.superAndMarketMarkerArr;
         },
+        getPs(state){
+            return state.ps;
+        },
+        getGeocoder(state){
+            return state.geocoder;
+        }
     },
     mutations,
-    actions,
+    actions
 });
