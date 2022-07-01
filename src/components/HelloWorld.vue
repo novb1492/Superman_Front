@@ -28,7 +28,7 @@ export default {
       resizeHeight:'full',
       arr:[],
       nameAndAddressArr:[],
-      onMouseIndex:[],
+      onMouseIndex:[]
     }
   },
   setup() {
@@ -40,13 +40,15 @@ export default {
       };
       return {
         onSwiper,
-        onSlideChange,
+        onSlideChange
       };
   },
   computed: {
     ...mapGetters({
       map: 'getMap',
       superAndMarketMarkerArr:'getSuperAndMarketMarkerArr',
+      ps:'getPs',
+      geocoder:'getGeocoder'
     })
   },
   mounted(){
@@ -58,8 +60,7 @@ export default {
     xyToAddress(){
         //좌표를 주소로 변환
         var latlng=this.map.getCenter();
-        var geocoder = new window.kakao.maps.services.Geocoder();
-        geocoder.coord2Address(latlng.La, latlng.Ma,this.searchMarket);
+        this.geocoder.coord2Address(latlng.La, latlng.Ma,this.searchMarket);
     },
     moveXy(item,index){
       this.$refs.kmap.changeFocus(item);
@@ -84,9 +85,8 @@ export default {
       }   
     },
     search(keywords){
-      var ps = new window.kakao.maps.services.Places(); 
       for(var i in keywords){
-        ps.keywordSearch(keywords[i], this.setAllData); 
+        this.ps.keywordSearch(keywords[i], this.setAllData); 
       }
     },
     setAllData(data, status, pagination){
@@ -124,7 +124,7 @@ export default {
               this.superAndMarketMarkerArr[this.superAndMarketMarkerArr.length]=marker;
             }
         }
-    },
+    }
   }
 }
 </script>

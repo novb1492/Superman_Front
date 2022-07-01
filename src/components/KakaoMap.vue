@@ -10,7 +10,7 @@ export default {
   props:['width','height','resizeWidth','resizeHeight'],
   computed: {
     ...mapGetters({
-      map: 'getMap',
+      map: 'getMap'
     })
   },
   mounted(){
@@ -62,8 +62,7 @@ export default {
       infowindow.setContent(content);
       infowindow.open(this.map, marker);
       return infowindow;
-    },
-    
+    }
   }   
 }
 </script>
