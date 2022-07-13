@@ -1,12 +1,12 @@
 <template>
 <swiper
-    :slides-per-view="5.3"
-    :space-between="50"
+    :slides-per-view="3.3"
+    :space-between="1"
     @swiper="onSwiper"
     @slideChange="onSlideChange"
   > 
-<swiper-slide v-for="(item,index) in arr " :key="item">
-   <div @mouseover="moveXy(item,index)">{{item.place_name}}<br/>{{item.address_name}}<br/>{{index}}index</div>
+<swiper-slide v-for="(item,index) in arr " :key="item" style="height: 100px;">
+   <p @mouseover="moveXy(item,index)">{{item.place_name}}<br/>{{item.address_name}}<br/>{{index}}index</p>
 </swiper-slide>
   </swiper>
   <kakao-map ref="kmap" :height="kmapHeight" :width="kmapWidth" :resizeWidth="resizeWidth" :resizeHeight="resizeHeight"></kakao-map>
@@ -23,7 +23,7 @@ export default {
   data() {
     return {
       kmapWidth:window.innerWidth,
-      kmapHeight:window.innerHeight,
+      kmapHeight:window.innerHeight-500,
       resizeWidth:'full',
       resizeHeight:'full',
       arr:[],
