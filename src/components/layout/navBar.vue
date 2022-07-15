@@ -85,7 +85,7 @@
   text-align: center;
   transition: 0.5s;
 }
-.navigation ul li.active a .icon{
+.navigation ul li:hover a .icon{
   transform: translateY(-50px);
 }
 .navigation ul li a .text{
@@ -95,7 +95,7 @@
   letter-spacing: 0.00;
   transition: 0.5s;
 }
-.navigation ul li.active a .text{
+.navigation ul li:hover a .text{
   opacity: 1;
   transform: translateY(10px);
 }
@@ -107,6 +107,7 @@
   background-color: #29fd53;
   border-radius: 50%;
   border: 6px solid ;
+  transition: 0.5s;
 }
 </style>
 <script>

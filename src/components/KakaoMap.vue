@@ -10,7 +10,9 @@ export default {
   props:['width','height','resizeWidth','resizeHeight'],
   computed: {
     ...mapGetters({
-      map: 'getMap'
+      map: 'getMap',
+      ownMarker:'getOwnMarker',
+      ownMarkerFlag:'getOwnMarkerFlag'
     })
   },
   mounted(){
@@ -62,6 +64,22 @@ export default {
       infowindow.setContent(content);
       infowindow.open(this.map, marker);
       return infowindow;
+    },
+    showOwnPos(lat,lon){
+      console.log(lat);
+      var values=new Object;
+      let latLon =new Object;
+      latLon.y=lat;
+      latLon.x=lon;
+      let ownMarkerTemp=this.setMarker(latLon);
+      if(this.ownMarkerFlag){
+        this.ownMarker.setMap(null);
+      }else{
+        values.flag=true;
+      }
+      values.marker=ownMarkerTemp;
+      this.$store.dispatch('setOwnMarker',values);
+      ownMarkerTemp.setMap(this.map);
     }
   }   
 }

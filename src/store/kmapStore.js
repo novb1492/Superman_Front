@@ -9,8 +9,9 @@ export const kmapStore = new Vuex.Store({
         kHeight:0,
         superAndMarketMarkerArr:[],
         ps:new window.kakao.maps.services.Places(),
-        geocoder:new window.kakao.maps.services.Geocoder()
-
+        geocoder:new window.kakao.maps.services.Geocoder(),
+        ownMarker:null,
+        ownMarkerFlag:false,
     },
     getters: {
         getMap(state) {
@@ -24,6 +25,12 @@ export const kmapStore = new Vuex.Store({
         },
         getGeocoder(state){
             return state.geocoder;
+        },
+        getOwnMarker(state){
+            return state.ownMarker;
+        },
+        getOwnMarkerFlag(state){
+            return state.ownMarkerFlag;
         }
     },
     mutations,

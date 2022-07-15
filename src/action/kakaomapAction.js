@@ -14,5 +14,9 @@ export default {
     },
     clearSearchDataArr(context){
         context.commit('clearSearchDataArr');
+    },
+    setOwnMarker(context,payload){
+        context.commit('setOwnMarkerFlag',payload.flag);
+        context.commit('setOwnMarker',payload.marker);
     }
 }

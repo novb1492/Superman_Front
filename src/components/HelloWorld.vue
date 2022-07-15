@@ -28,7 +28,12 @@ export default {
       resizeHeight:'full',
       arr:[],
       nameAndAddressArr:[],
-      onMouseIndex:[]
+      onMouseIndex:[],
+      options2 : {
+      enableHighAccuracy: true,
+      timeout: 5000,
+      maximumAge: 0,
+      },
     }
   },
   setup() {
@@ -48,15 +53,30 @@ export default {
       map: 'getMap',
       superAndMarketMarkerArr:'getSuperAndMarketMarkerArr',
       ps:'getPs',
-      geocoder:'getGeocoder'
+      geocoder:'getGeocoder',
     })
   },
   mounted(){
     window.kakao.maps.event.addListener(this.map, 'dragend',() =>{//중심점 변경시(드래그)인근 마트들 검색
       this.xyToAddress();
     });
+    this.watchPosition();
   },
   methods:{
+    watchPosition(){
+      if('geolocation' in navigator) {
+      navigator.geolocation.watchPosition(this.success,this.error,this.options2);
+      } else {
+        alert('위치정보를 사용할 수 없습니다');
+      }
+    },
+    success(position){
+      this.$refs.kmap.showOwnPos(position.coords.latitude, position.coords.longitude);
+    },
+    error(err) {
+      console.log(err);
+      alert('위치정보를 사용할 수 없습니다');
+    },
     xyToAddress(){
         //좌표를 주소로 변환
         var latlng=this.map.getCenter();
@@ -124,7 +144,7 @@ export default {
               this.superAndMarketMarkerArr[this.superAndMarketMarkerArr.length]=marker;
             }
         }
-    }
+    },
   }
 }
 </script>

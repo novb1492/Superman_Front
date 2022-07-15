@@ -7,6 +7,12 @@ export default {
     },
     clearSearchDataArr(state){
         state.searchData=[];
+    },
+    setOwnMarker(state,data){
+        state.ownMarker=data;
+    },
+    setOwnMarkerFlag(state,data){
+        state.ownMarkerFlag=data;
     }
     
 
