@@ -17,6 +17,5 @@ export default {
     },
     setOwnMarker(context,payload){
         context.commit('setOwnMarkerFlag',payload.flag);
-        context.commit('setOwnMarker',payload.marker);
     }
 }
